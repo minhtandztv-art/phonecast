@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>PhoneCast — Trình chiếu điện thoại</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/"><span class="brand-icon">▣</span> PhoneCast</a>
+    <span class="secure"><i></i> Kết nối riêng tư qua WebRTC</span>
+  </header>
+  <main class="shell">
+    <section class="intro">
+      <div class="eyebrow">WIRELESS SCREEN MIRRORING</div>
+      <h1>Chiếu màn hình điện thoại<br><span>lên máy tính</span></h1>
+      <p>Kết nối Android với máy tính bằng mã QR hoặc mã ghép nối. Không cần cáp USB.</p>
+    </section>
+
+    <section class="workspace">
+      <div class="panel desktop-panel" id="desktopPanel">
+        <div class="panel-head"><div><span class="step">01</span><b>Trên máy tính</b></div><span class="pill">Màn hình nhận</span></div>
+        <div class="display" id="display">
+          <video id="remoteVideo" autoplay playsinline></video>
+          <div class="placeholder" id="placeholder">
+            <div class="monitor">▱</div>
+            <b>Chưa có thiết bị kết nối</b>
+            <span>Màn hình điện thoại sẽ xuất hiện tại đây</span>
+          </div>
+          <button class="fullscreen" id="fullscreenBtn" title="Toàn màn hình">⛶</button>
+        </div>
+        <div class="connection-row"><span class="dot" id="statusDot"></span><span id="statusText">Đang tạo phòng kết nối…</span></div>
+        <div class="pairing">
+          <div class="qr-wrap"><div id="qrcode"></div></div>
+          <div class="pair-info">
+            <span class="muted">QUÉT QR BẰNG ĐIỆN THOẠI</span>
+            <div class="code" id="roomCode">------</div>
+            <p>Mở camera hoặc trình quét QR trên Android, sau đó làm theo hướng dẫn.</p>
+            <button class="secondary" id="copyLink">Sao chép liên kết ghép nối</button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="panel phone-panel">
+        <div class="panel-head"><div><span class="step">02</span><b>Trên điện thoại Android</b></div></div>
+        <div class="phone-instructions">
+          <div class="phone-art"><div class="phone-screen"><span>PhoneCast</span><div class="signal">◉</div><small>Chia sẻ màn hình</small></div></div>
+          <ol>
+            <li>Quét mã QR ở bên trái bằng điện thoại.</li>
+            <li>Nhấn <b>Bắt đầu chia sẻ màn hình</b>.</li>
+            <li>Chọn <b>Toàn bộ màn hình</b> nếu Android hiển thị lựa chọn.</li>
+            <li>Quay lại máy tính để xem trình chiếu.</li>
+          </ol>
+          <div class="notice"><b>Lưu ý:</b> Hãy giữ trang PhoneCast mở trên cả hai thiết bị. Âm thanh hệ thống có thể không được truyền tùy thiết bị Android.</div>
+        </div>
+      </aside>
+    </section>
+    <footer>PhoneCast • Không lưu hoặc ghi hình nội dung màn hình. Chỉ người có mã phòng mới có thể yêu cầu ghép nối.</footer>
+  </main>
+
+  <section class="phone-view hidden" id="phoneView">
+    <div class="phone-card">
+      <div class="brand"><span class="brand-icon">▣</span> PhoneCast</div>
+      <h1>Kết nối với máy tính</h1>
+      <p id="phoneMessage">Đang tham gia phòng…</p>
+      <div class="phone-code" id="phoneCode"></div>
+      <button class="primary" id="startShare" disabled>Bắt đầu chia sẻ màn hình</button>
+      <p class="hint">Android sẽ hỏi quyền chia sẻ màn hình. Chọn xác nhận để bắt đầu truyền.</p>
+      <button class="text-button" id="leaveRoom">Ngắt kết nối</button>
+    </div>
+  </section>
+  <div class="toast" id="toast"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
